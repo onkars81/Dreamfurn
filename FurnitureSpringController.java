@@ -67,7 +67,12 @@ public class FurnitureSpringController {
 	{		return "home";	}
 	  //add products
 
-
+	@RequestMapping(value="/valid")
+	public String validate()
+	{
+	
+		return "valid";
+	}
 	
 	
 	@RequestMapping(value ={"/users/ProductRegistration"}, method = RequestMethod.POST) 
