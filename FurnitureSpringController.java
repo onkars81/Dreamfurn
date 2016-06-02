@@ -17,6 +17,8 @@ import com.ex.model.Product;
 import com.ex.model.ProductService;
 import com.ex.model.User;
 import com.ex.model.UserService;
+import com.ex.security.User_AuthenticationServiceImpl;
+import com.ex.security.User_authentication;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -34,6 +36,8 @@ import javax.validation.Valid;
 public class FurnitureSpringController {
 	
 	private ProductService productService;
+	@Autowired
+	private User_AuthenticationServiceImpl ua;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -222,6 +226,13 @@ public class FurnitureSpringController {
 	            	return mav;
 	            }
 	            userService.add(user);
+	            User_authentication uauth = new User_authentication(); 
+	            uauth.setUsername(user.getName());
+	            uauth.setEnabled("true");
+	            uauth.setUser_id(user.getUser_id());
+	            uauth.setPassword(user.getPassword());
+	            ua.add(uauth);
+	            
 	            ModelAndView mav = new ModelAndView("loginForm");
 	            
 	            return mav;
