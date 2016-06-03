@@ -64,10 +64,17 @@ document.getElementById("logoutForm").submit();
 
             <li><a href="${pageContext.request.contextPath }/AllProduct">All
                     Products</a></li>
-            <li></li>
-            <li class="active"><a
+         
+         	<s:if test="${pageContext.request.userPrincipal.name != null}">
+         	
+         	<security:authorize access="hasRole('ROLE_ADMIN')">
+                       
+         	<li class="active"><a
                 href="${pageContext.request.contextPath }/admin/ProductRegistration">Add Product<span class="sr-only">(current)</span></a></li>
-
+         	</security:authorize>
+         	
+         	</s:if>
+            
 </ul>        
       <ul class="nav navbar-nav navbar-right">
         <li><a href="signUp"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
