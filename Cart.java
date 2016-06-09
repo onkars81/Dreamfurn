@@ -1,125 +1,61 @@
 package com.ex.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
+
 
 @Entity
-@Table(name="Cart_data")
-public class Cart {
+public class Cart implements Serializable{
 
-	@Id
-	@Column
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	int cart_id;
-	@Column
-	int prod;
-	@Column
-	String productname;
-	@Column
-	int user_id;
-	@Column
-	String username;
-	@Column
-	int price;
-	@Column
-	int quantity;
-	
-	
-public Cart() {
-	// TODO Auto-generated constructor stub
-}
+    private static final long serialVersionUID = 3940548625296145582L;
 
+    @Id
+    @GeneratedValue
+    private int cartId;
 
-@Override
-public String toString() {
-	return "Cart [cart_id=" + cart_id + ", prod=" + prod + ", productname=" + productname + ", user_id=" + user_id
-			+ ", username=" + username + ", price=" + price + ", quantity=" + quantity + "]";
-}
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<CartItem> cartItems;
 
+    @OneToOne
+    @JoinColumn(name = "customerId")
+    @JsonIgnore
+    private Customer customer;
 
-public Cart(int cart_id, int prod, String productname, int user_id, String username, int price, int quantity) {
-	super();
-	this.cart_id = cart_id;
-	this.prod = prod;
-	this.productname = productname;
-	this.user_id = user_id;
-	this.username = username;
-	this.price = price;
-	this.quantity = quantity;
-}
+    private double grandTotal;
 
+    public int getCartId() {
+        return cartId;
+    }
 
-public int getCart_id() {
-	return cart_id;
-}
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
+    }
 
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
 
-public void setCart_id(int cart_id) {
-	this.cart_id = cart_id;
-}
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
 
+    public Customer getCustomer() {
+        return customer;
+    }
 
-public int getProd() {
-	return prod;
-}
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
+    public double getGrandTotal() {
+        return grandTotal;
+    }
 
-public void setProd(int prod) {
-	this.prod = prod;
-}
+    public void setGrandTotal(double grandTotal) {
+        this.grandTotal = grandTotal;
+    }
 
-
-public String getProductname() {
-	return productname;
-}
-
-
-public void setProductname(String productname) {
-	this.productname = productname;
-}
-
-
-public int getUser_id() {
-	return user_id;
-}
-
-
-public void setUser_id(int user_id) {
-	this.user_id = user_id;
-}
-
-
-public String getUsername() {
-	return username;
-}
-
-
-public void setUsername(String username) {
-	this.username = username;
-}
-
-
-public int getPrice() {
-	return price;
-}
-
-
-public void setPrice(int price) {
-	this.price = price;
-}
-
-
-public int getQuantity() {
-	return quantity;
-}
-
-
-public void setQuantity(int quantity) {
-	this.quantity = quantity;
-}
-	
-}
+} // The End of Class;

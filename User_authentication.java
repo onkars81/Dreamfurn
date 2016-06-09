@@ -26,12 +26,6 @@ public class User_authentication implements Serializable {
 				+ ", enabled=" + enabled + "]";
 	}
 	
-	public User_authentication() {
-		// TODO Auto-generated constructor stub
-		super();
-	}
-	
-	
 	public User_authentication(int user_id, String username, String password, String enabled) {
 		super();
 		this.user_id = user_id;
@@ -40,6 +34,11 @@ public class User_authentication implements Serializable {
 		this.enabled = enabled;
 	}
 
+	
+	public User_authentication()
+	{
+		super();
+	}
 
 	public int getUser_id() {
 		return user_id;

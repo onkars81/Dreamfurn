@@ -20,6 +20,79 @@
 </head>
 <body>
 
+
+ <jsp:include page="header.jsp"></jsp:include>
+<div class="container">
+  <h2>Product Details </h2>
+  
+          
+  <table class="table">
+    <thead>
+      <tr>
+      <th></th>
+    <th></th>
+      </tr>
+    </thead>
+    <tbody>
+       <tr>
+   
+ 
+   </tr>
+ 
+    </tbody>
+    
+  
+  </table>
+ 
+</div>
+
+<section class="container" data-ng-app="cartApp" style="height: 430px;">
+
+<div class="row">
+<div class="col-md-6">
+<img src="${pageContext.request.contextPath}/resources/images/${product.prod}.jpg" height="150" width=150 />
+</div>
+<div class="col-md-6">
+
+<h3>${product.productname}</h3>
+<p>${product.description}</p>
+<p>
+<strong>Item Code : </strong><span class="label label-warning">${product.prod}</span>
+</p>
+<p>
+<strong>Product Category :</strong> : ${product.category}
+</p>
+
+<h4>Rs  ${product.price}  INR</h4>
+
+<p ng-controller="cartController">
+
+<a href="${pageContext.request.contextPath}/AllProduct"   class="btn btn-success" >
+<span class="glyphicon-circle-arrow-left glyphicon"></span> back
+</a>
+
+
+<a href="#" ng-click ="addToCart('${product.prod}')" class="btn btn-warning btn-large">
+ <span class="glyphicon-shopping-cart glyphicon"></span> Order Now
+</a>
+</p>
+
+</div>
+</div>
+</section>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- - See more at: http://myjourneyonjava.blogspot.in/2015/09/spring-4-mvc-hibernate-4-mysql-5-maven.html#sthash.k6j8YznY.dpuf -->
+</body>
+
+</html>
+
+
+
+
 <!-- 
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid">
@@ -45,76 +118,9 @@
   </div>/.container-fluid
 </nav>
  -->
- <jsp:include page="header.jsp"></jsp:include>
-<div class="container">
-  <h2>Product Details </h2>
-  
-          
-  <table class="table">
-    <thead>
-      <tr>
-      <th></th>
-    <th></th>
-      </tr>
-    </thead>
-    <tbody>
-       <tr>
-   
-  <%--  <td><c:out value="${product.productname}"/></td>
+ <%--  <td><c:out value="${product.productname}"/></td>
     <td><c:out value="${product.category}"/></td>
     <td><c:out value="${product.description}"/></td>
     <td><c:out value="${product.price}"/></td>
     <td><img alt="No Image found" src="<c:out value='resouces/images/fur1.jsp'/>"></td> --%>
    
-   </tr>
- 
-    </tbody>
-    
-  
-  </table>
- 
-</div>
-
-<section class="container" data-ng-app="cartApp" style="height: 430px;">
-
-<div class="row">
-<div class="col-md-6">
-<img src="${product.image}" height="150" width=150 />
-</div>
-<div class="col-md-6">
-
-<h3>${product.productname}</h3>
-<p>${product.description}</p>
-<p>
-<strong>Item Code : </strong><span class="label label-warning">${product.prod}</span>
-</p>
-<p>
-<strong>Product Category :</strong> : ${product.category}
-</p>
-
-<h4>Rs  ${product.price}  INR</h4>
-
-<p ng-controller="cartController">
-
-<a href='<spring:url value="/AllProduct" />   class="btn btn-success"' >
-<span class="glyphicon-circle-arrow-left glyphicon"></span> back
-</a>
-
-
-<a href="#" ng-click ="addToCart('${product.prod}')" class="btn btn-warning btn-large">
- <span class="glyphicon-shopping-cart glyphicon"></span> Order Now
-</a>
-</p>
-
-</div>
-</div>
-</section>
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<!-- - See more at: http://myjourneyonjava.blogspot.in/2015/09/spring-4-mvc-hibernate-4-mysql-5-maven.html#sthash.k6j8YznY.dpuf -->
-</body>
-
-</html>

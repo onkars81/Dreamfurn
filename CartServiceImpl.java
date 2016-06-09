@@ -1,59 +1,36 @@
 package com.ex.model;
 
-
-import javax.transaction.Transactional;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import com.ex.model.CartDao;
+import com.ex.model.Cart;
+import com.ex.model.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-public class CartServiceImpl implements CartDao{
-
-	@Autowired
-	private CartDao cart;
-	
-	@Autowired
-	private SessionFactory session;
-	
-	@Transactional
-	public void add(Cart cartitem) {
-		Session s = session.openSession();
-		Transaction tx = s.beginTransaction();
-		tx.begin();
-		cart.add(cartitem);
-		tx.commit();
-	}
-
-	@Transactional
-	public void delete(Cart cartitem) {
-		Session s= session.openSession();
-		Transaction tx =s.beginTransaction();
-		tx.begin();
-		cart.delete(cartitem);
-		tx.commit();
-		
-	}
-
-	@Transactional
-	public void  edit(Cart cartitem)
-	{
-		Session s= session.openSession();
-		Transaction tx =s.beginTransaction();
-		tx.begin();
-		cart.delete(cartitem);
-		tx.commit();
-	}
-	
-	@Transactional
-	public void remove(int cartitem) {
-	Session s = session.openSession();
-		Transaction tx=s.beginTransaction();
-		tx.begin();
-		cart.remove(cartitem);	
-		tx.commit();
-	
-	}
+import org.springframework.stereotype.Service;
 
 
-}
+
+@Service
+
+public class CartServiceImpl implements CartService
+{
+
+    @Autowired
+ 
+   private CartDao cartDao;
+
+ 
+   public Cart getCartById(int cartId)
+{
+      
+  return cartDao.getCartById(cartId);
+
+    }
+
+   
+ public void update(Cart cart){
+  
+      cartDao.update(cart);
+ 
+   }
+
+
+} // The End of Class;

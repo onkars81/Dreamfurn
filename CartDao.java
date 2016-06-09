@@ -1,10 +1,12 @@
 package com.ex.model;
 
+import java.io.IOException;
+
 public interface CartDao {
-	
-	public void add(Cart cartitem);
-	public void delete(Cart cartitem);
-	public void remove(int cartitem);
-	public void edit(Cart cart);
-	
+
+	Cart getCartById(int cartId);
+
+    Cart validate(int cartId) throws IOException;
+
+    void update(Cart cart);
 }

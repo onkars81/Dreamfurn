@@ -47,6 +47,10 @@ public class User_authorization implements Serializable{
 		this.user_id = user_id;
 		this.role = role;
 	}
+	public User_authorization() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 	
