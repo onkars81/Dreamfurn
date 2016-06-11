@@ -4,6 +4,7 @@
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <%@taglib prefix="tag" uri="http://www.springframework.org/tags" %>
     <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+    <%@taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
     
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -47,9 +48,19 @@
     <td><c:out value="${product.category}"/></td>
     <td><c:out value="${product.description}"/></td>
   <%--   <td><c:out value="${product.price}"/></td> --%>
-    <td><img src="<c:out value="/resources/images/${product.prod}.jpg"/>" width="100px" ></img></td>
+   <%--  <td><img src="<c:out value="/resources/images/${product.prod}.jpg"/>" width="100px" ></img></td> --%>
+       <td><img src="${pageContext.request.contextPath}/resources/images/${product.prod}.jpg" width="100px" ></img></td>
    
-    <td align="center"><a href="showProduct?prod=${product.prod}">View</a> | <a href="productform?prod=${product.prod}">Edit</a> | <a href="deleteProduct?prod=<c:out value='${product.prod}'/>">Delete</a></td>
+    <td align="center"><a href="showProduct?prod=${product.prod}">View</a> 
+    
+    
+     <c:if test="${pageContext.request.userPrincipal.name != null}">
+            <security:authorize access="hasRole('ROLE_ADMIN')">
+ 	| <a href="productform?prod=${product.prod}">Edit</a> | <a href="deleteProduct?prod=<c:out value='${product.prod}'/>">Delete</a></td>		
+			</security:authorize>
+			</c:if>
+      
+   
    </tr>
   </c:forEach>
     </tbody>

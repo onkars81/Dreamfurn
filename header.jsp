@@ -64,25 +64,29 @@ document.getElementById("logoutForm").submit();
 
             <li><a href="${pageContext.request.contextPath }/AllProduct">All
                     Products</a></li>
-         
-         	<s:if test="${pageContext.request.userPrincipal.name != null}">
-         	
-         	<security:authorize access="hasRole('ROLE_ADMIN')">
-                       
-         	<li class="active"><a
-                href="${pageContext.request.contextPath }/admin/ProductRegistration">Add Product<span class="sr-only">(current)</span></a></li>
-         	</security:authorize>
-         	
-         	</s:if>
             
+            <li class="active">
+            <s:if test="${pageContext.request.userPrincipal.name != null}">
+            <security:authorize access="hasRole('ROLE_ADMIN')">
+        <a href="${pageContext.request.contextPath }/admin/ProductRegistration">Add Product<span class="sr-only">(current)</span></a>
+			
+			</security:authorize>
+			</s:if>
+			</li>
 </ul>        
       <ul class="nav navbar-nav navbar-right">
         <li><a href="signUp"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
         <li><a href="loginForm"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <s:if test="${pageContext.request.userPrincipal.name != null}">
+            <security:authorize access="hasRole('ROLE_USER')">
+       			<li><a href="Cart"><span class="glyphicon glyphicon-icon-shopping-cart"></span>Cart</a></li>
+			</security:authorize>
+			</s:if>
         <li> <s:if
                     test="${pageContext.request.userPrincipal.name != null}">
                         <li style="color: yellow;">Welcome : ${pageContext.request.userPrincipal.name} </li>
                         <li><a href="javascript:formSubmit()"> Logout</a></li>
+                        
                         <security:authentication var="user"
                             property="principal.authorities" />
 
@@ -93,7 +97,7 @@ document.getElementById("logoutForm").submit();
                             </security:authorize>
 
                             <security:authorize access="hasRole('ROLE_USER')">
-                                User
+                                <li style="color:green;" > User </li>
                             </security:authorize>
                         </security:authorize>
 
@@ -106,21 +110,6 @@ document.getElementById("logoutForm").submit();
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Table(name="Product")
 public class Product implements Serializable{
 	
-	
 		@Id
 		@Column
 		@GeneratedValue(strategy=GenerationType.AUTO)
@@ -98,9 +97,6 @@ public class Product implements Serializable{
 		public void setImage(MultipartFile image) {
 			this.image = image;
 		}
-
-
-		
 
 		public Product(int prod, String productname, String category, String description, String price,
 				MultipartFile image) {

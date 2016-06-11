@@ -45,23 +45,23 @@
     <!-- Wrapper for slides -->
        <div class="carousel-inner" role="listbox">
       <div class="item active">
-        <img src="resources/images/fur1.jpg" alt="Chennai Express" width="400" height="150">
+        <img src="${pageContext.request.contextPath}/resources/images/1.jpg" alt="Chennai Express" width="400" height="150">
       </div>
 
       <div class="item">
-        <img src="${pageContext.request.contextPath}/resources/images/fur6.jpg" alt="Lagaan" width="400" height="150">
+        <img src="${pageContext.request.contextPath}/resources/images/6.jpg" alt="Lagaan" width="400" height="150">
       </div>
     
       <div class="item">
-        <img src="${pageContext.request.contextPath}/resources/images/fur3.jpg" alt="phantom" width="400" height="150">
+        <img src="${pageContext.request.contextPath}/resources/images/3.jpg" alt="phantom" width="400" height="150">
       </div>
 
       <div class="item">
-        <img src="${pageContext.request.contextPath}/resources/images/fur4.jpg" alt="sholay" width="400" height="150">
+        <img src="${pageContext.request.contextPath}/resources/images/4.jpg" alt="sholay" width="400" height="150">
       </div>
 
       <div class="item">
-        <img src="${pageContext.request.contextPath}/resources/images/fur5.jpg" alt="singham" width="400" height="150">
+        <img src="${pageContext.request.contextPath}/resources/images/5.jpg" alt="singham" width="400" height="150">
       </div>
 
 
@@ -85,19 +85,21 @@
 <div class="col-md-4">
   <h2>Wooden Chair</h2>
   <p>Newly furnished wooden chair for sale at a very cheap rate</p>            
-  <img src="${pageContext.request.contextPath}/resources/images/fur8.jpg" class="img-thumbnail" alt="Cinque Terre" width="304" height="236"> 
+  <img src="${pageContext.request.contextPath}/resources/images/8.jpg" class="img-thumbnail" alt="Cinque Terre" width="304" height="236"> 
   </div>
 <div class="col-md-4">
   <h2>Sofa</h2>
   <p>Sofa</p>            
-  <img src="${pageContext.request.contextPath}/resources/images/fur7.jpg" class="img-thumbnail" alt="Cinque Terre" width="304" height="236"> 
+  <img src="${pageContext.request.contextPath}/resources/images/7.jpg" class="img-thumbnail" alt="Cinque Terre" width="304" height="236"> 
   </div>
 <div class="col-md-4">
   <h2>Sofa-cum bed</h2>
   <p>Sofa -Cum bed</p>            
-  <img src="${pageContext.request.contextPath}/resources/images/fur6.jpg" class="img-thumbnail" alt="Cinque Terre" width="304" height="236"> 
+  <img src="${pageContext.request.contextPath}/resources/images/6.jpg" class="img-thumbnail" alt="Cinque Terre" width="304" height="236"> 
 </div>
+<%@include file="footer.jsp"%>
 </div>
+
 </div>
 <script src="http://code.jquery.com/query-1.11.0.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>

@@ -27,12 +27,6 @@
 		<link rel="stylesheet" href="resources/css/form-elements.css">
         <link rel="stylesheet" href="resources/css/style.css">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
 
         <!-- Favicon and touch icons -->
         <link rel="shortcut icon" href="assets/ico/favicon.png">
@@ -66,11 +60,11 @@
                 	
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1 class=""><strong>DreamFurn</strong> Welcome's &amp; you !</h1>
+                            <h1 class="" style="color: gray;"><strong>DreamFurn &amp; Co.</strong> Welcome's you ! </h1>
                             <div class="description">
-                            	<p>
-	                            	 <strong>"login and register forms"</strong>  
-	                            	<a href="index" target="_blank"><strong>to View Products</strong></a>, 
+                            	<p style="color: gray;">
+	                            	 <strong>"login or register"</strong>  
+	                            	<a href="AllProduct" style="color:silver;" target="_blank"><strong>to Buy Products</strong></a>, 
 	                            	
                             	</p>
                             </div>
@@ -149,34 +143,38 @@
 				                        <div class="form-group">
 				                        	<label class="sr-only" for="form-last-name">Last name</label>
 				                        	<input type="text" path="lastname" name="lastname" placeholder="Last name..." class="form-last-name form-control" id="form-last-name">
+				                       <form:errors path="name" value="${msg}" />
 				                        </div>
 				                        <div class="form-group">
 				                        	<label class="sr-only" for="form-email">Email</label>
 				                        	<input type="text" path="email" name="email" placeholder="Email..." class="form-email form-control" id="form-email">
-				                     <form:errors path="email" cssClass="error"/>
+				                     <form:errors path="email" cssClass="error" value="${msg}"/> 
+				                     </div>
 				                           <div class="form-group">
 				                        	<label class="sr-only" for="form-email">Password</label>
 				                       <form:password path="password" name="password" size="30" placeholder="Password.." class="form-email form-control" id="form-email"/>
 				                       <%-- <form:password path="password"name="password" size="30"/>
-									 --%><form:errors path="password" cssClass="error"/>	
-				                        </div>
+									 --%><form:errors path="password" cssClass="error" value="${msg}"/>
+									 </div>	
+				                       
 				                           <div class="form-group">
 				                        	<label class="sr-only" for="form-email">Confirm Password</label>
 				                        <form:password path="confirmpassword" name="confirmpassword" size="30" placeholder="Confirm Password.." class="form-email form-control" id="form-email"/>
 				                       <form:errors path="confirmpassword" cssClass="error"/>
 									  	<!-- <input type="text" path="confirmpassword" name="confirmpassword" placeholder="confirmpassword.." class="form-email form-control" id="form-email">
 				                        -->
-				                       
-				                        </div>
-				                         </div>
-				                           <div class="form-group">
+				                       </div>
+				                  
+				                         <div class="form-group">
 				                        	<label class="sr-only" for="form-email">Mobile</label>
 				                        	<input type="text" path="mobile" name="mobile" placeholder="mobile.." class="form-email form-control" id="form-email">
+				                        	<form:errors path="mobile" cssClass="error" />
 				                        </div>
 				                        <div class="form-group">
 				                        	<label class="sr-only" for="form-about-yourself">Address</label>
 				                        	<textarea name="Address" path="Address" placeholder="About Your Address..." 
 				                        				class="form-about-yourself form-control" id="form-about-yourself"></textarea>
+				                        	<form:errors path="address" cssClass="error"/>
 				                        </div>
 				                        <button type="submit" class="btn">Sign me up!</button>
 				                    </form:form>

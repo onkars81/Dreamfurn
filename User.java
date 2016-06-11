@@ -51,18 +51,20 @@ public class User implements Serializable{
 	
 	@NotEmpty(message = "Please enter Confirm Password.")
 	String confirmpassword;
-	
+
 	
 	public User() {
 		
 	}
 	
-	private void checkPassword() {
+	private Boolean checkPassword() {
 	    if(this.password == null || this.confirmpassword == null){
-	        return;
+	        return false;
 	    }else if(!this.password.equals(confirmpassword)){
 	        this.confirmpassword = null;
+	        return false;
 	    }
+	    return true;
 	}
 	
 	

@@ -1,32 +1,40 @@
 package com.ex.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import com.ex.model.BillingAddress;
+import com.ex.model.Cart;
+import com.ex.model.CartItem;
+import com.ex.model.CartItemService;
+import com.ex.model.CartService;
+import com.ex.model.Customer;
+import com.ex.model.CustomerOrder;
+import com.ex.model.CustomerOrderService;
+import com.ex.model.CustomerService;
 import com.ex.model.Product;
 import com.ex.model.ProductService;
+import com.ex.model.ShippingAddress;
 import com.ex.model.User;
 import com.ex.model.UserService;
-import com.ex.security.User_AuthenticationServiceImpl;
 import com.ex.security.User_authentication;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -37,8 +45,6 @@ public class FurnitureSpringController {
 	
 	private ProductService productService;
 	@Autowired
-	private User_AuthenticationServiceImpl ua;
-	@Autowired
 	private UserService userService;
 	@Autowired
 	public FurnitureSpringController(ProductService productService)
@@ -46,6 +52,19 @@ public class FurnitureSpringController {
 		this.productService=productService;
 		//this.userService=userservice;	
 	}
+	
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private CartItemService cartItemService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private CustomerOrderService customerOrderService;
+	
 	@RequestMapping(value="/")
 	public String getLandingPage()
 	{		return "index";	}	
@@ -71,12 +90,15 @@ public class FurnitureSpringController {
 	{		return "home";	}
 	  //add products
 
-	@RequestMapping(value="/valid")
-	public String validate()
+
+	@RequestMapping(value="/Cart")
+	public String viewCart()
 	{
-	
-		return "valid";
+		
+		return "Cart";
 	}
+	
+	
 	
 	
 	@RequestMapping(value ={"/users/ProductRegistration"}, method = RequestMethod.POST) 
@@ -100,6 +122,12 @@ public class FurnitureSpringController {
 		  
 		   return new ModelAndView("ProductRegistration");
 	  
+	   }
+	   
+	   @RequestMapping("/valid")
+	   public void validate(@ModelAttribute("data") Product p)
+	   {
+		   System.out.print("data is valid !");
 	   }
 	
 	   //show all products once clicked on submit in product registration
@@ -128,8 +156,8 @@ public class FurnitureSpringController {
 			   bs.close();
 			   System.out.println("Image uploaded");
 			   productService.add(p);
-			   res=1;
-			   System.out.println("Data Inserted");
+			   
+			   System.out.println("Data Inserted"+res++);
 			   }
 			   catch(Exception ex)
 			   {
@@ -226,13 +254,6 @@ public class FurnitureSpringController {
 	            	return mav;
 	            }
 	            userService.add(user);
-	            User_authentication uauth = new User_authentication(); 
-	            uauth.setUsername(user.getName());
-	            uauth.setEnabled("true");
-	            uauth.setUser_id(user.getUser_id());
-	            uauth.setPassword(user.getPassword());
-	            ua.add(uauth);
-	            
 	            ModelAndView mav = new ModelAndView("loginForm");
 	            
 	            return mav;
@@ -256,5 +277,172 @@ public class FurnitureSpringController {
 			    List productList=productService.getAllProduct();
 			    model.put("productList", productList);
 			 
-			    return "AllProduct";
-			}}
+			    return "redirect:/AllProduct";
+			}
+
+
+	    @RequestMapping("/order/{cartId}")
+	    public String createOrder(@PathVariable("cartId") int cartId){
+	        CustomerOrder customerOrder = new CustomerOrder();
+	        Cart cart = cartService.getCartById(cartId);
+	        customerOrder.setCart(cart);
+
+	        Customer customer = cart.getCustomer();
+	        customerOrder.setCustomer(customer);
+	        customerOrder.setBillingAddress(customer.getBillingAddress());
+	        customer.setShippingAddress(customer.getShippingAddress());
+
+	        customerOrderService.addCustomerOrder(customerOrder);
+
+	        return "redirect:/checkout?cartId=" + cartId;
+
+	    }
+	/*---------------------
+	@RequestMapping("/rest/cart")
+	---------------------*/
+
+
+
+	    @RequestMapping("/rest/Cart/{cartId}")
+	    public @ResponseBody Cart getCartById(@PathVariable(value = "cartId") int cartId){
+	        return cartService.getCartById(cartId);
+	    }
+
+	    @RequestMapping(value = "/rest/Cart/add/{productId}", method = RequestMethod.PUT)
+	    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+	    public void addItem (@PathVariable(value = "productId") int productId, @AuthenticationPrincipal User_authentication activeUser){
+	        Customer customer = customerService.getCustomerByUsername(activeUser.getUsername());
+	        Cart cart = customer.getCart();
+	        Product product = productService.getProduct(productId);
+	        List<CartItem> cartItems = cart.getCartItems();
+	        
+	        int val=Integer.parseInt(product.getPrice());
+	        
+	        for (int i=0; i < cartItems.size(); i++){
+	            if(product.getProd() == cartItems.get(i).getProduct().getProd()){
+	                CartItem cartItem = cartItems.get(i);
+	                cartItem.setQuantity(cartItem.getQuantity() + 1);
+	               
+	                
+	                cartItem.setTotalPrice(val*cartItem.getQuantity());
+	                cartItemService.addCartItem(cartItem);
+
+	                return;
+	            }
+	        }
+
+	        CartItem cartItem = new CartItem();
+	        cartItem.setProduct(product);
+	        cartItem.setQuantity(1);
+	        cartItem.setTotalPrice(val*cartItem.getQuantity());
+	        cartItem.setCart(cart);
+	        cartItemService.addCartItem(cartItem);
+	    }
+
+	    @RequestMapping(value = "/rest/Cart/remove/{productId}", method = RequestMethod.PUT)
+	    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+	    public void removeItem(@PathVariable(value = "productId") int productId){
+	        CartItem cartItem = cartItemService.getCartItemByProductId(productId);
+	        cartItemService.removeCartItem(cartItem);
+
+	    }
+
+	    @RequestMapping(value = "/rest/Cart/{cartId}", method = RequestMethod.DELETE)
+	    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+	    public void clearCart(@PathVariable(value = "cartId") int cartId){
+	        Cart cart = cartService.getCartById(cartId);
+	        cartItemService.removeAllCartItems(cart);
+	    }
+
+	    @ExceptionHandler(IllegalArgumentException.class)
+	    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Illegal request, please verify your payload")
+	    public void handleClientErrors (Exception ex){
+
+	    }
+
+	    @ExceptionHandler(Exception.class)
+	    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Internal Server Error")
+	    public void handleServerErrors (Exception ex){
+
+	    }
+
+
+	/*-------------
+	@RequestMapping("/product")
+	----------------
+
+
+	    @RequestMapping("/productList/all")
+	    public String getProducts(Model model){
+	        List<Product> products = productService.getAllProduct();
+	        model.addAttribute("products", products);
+
+	        return "productList";
+	    }
+
+	    @RequestMapping("/viewProduct/{productId}")
+	    public String viewProduct(@PathVariable int productId, Model model) throws IOException{
+	        Product product = productService.getProduct(productId);
+	        model.addAttribute("product", product);
+
+	        return "viewProduct";
+	    }
+
+	    @RequestMapping("/productList")
+	    public String getProductByCategory(@RequestParam("searchCondition") String searchCondition, Model model){
+	        List<Product> products = productService.getAllProduct();
+	        model.addAttribute("products", products);
+	        model.addAttribute("searchCondition", searchCondition);
+
+	        return "productList";
+	    }
+	*/
+	    
+	    
+
+	    @RequestMapping("/register")
+	    public String registerCustomer(Model model){
+	        Customer customer = new Customer();
+	        BillingAddress billingAddress = new BillingAddress();
+	        ShippingAddress shippingAddress = new ShippingAddress();
+	        customer.setBillingAddress(billingAddress);
+	        customer.setShippingAddress(shippingAddress);
+
+	        model.addAttribute("customer", customer);
+
+	        return "registerCustomer";
+	    }
+
+
+	   @RequestMapping(value = "/register", method = RequestMethod.POST)
+	    public String registerCustomerPost(@Valid @ModelAttribute("customer") Customer customer, BindingResult result, Model model){
+
+	        if(result.hasErrors()){
+	            return "registerCustomer";
+	        }
+
+	        List<Customer> customerList = customerService.getAllCustomers();
+
+	        for (int i=0; i< customerList.size(); i++){
+	            if(customer.getCustomerEmail().equals(customerList.get(i).getCustomerEmail())){
+	                model.addAttribute("emailMsg", "Email already exists");
+
+	                return "registerCustomer";
+	            }
+
+	            if(customer.getUsername().equals(customerList.get(i).getUsername())){
+	                model.addAttribute("usernameMsg", "Username already exists");
+
+	                return "registerCustomer";
+	            }
+	        }
+
+	        customer.setEnabled(true);
+	        customerService.addCustomer(customer);
+	        return "registerCustomerSuccess";
+	    }
+
+		
+		
+		
+}
